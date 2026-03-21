@@ -112,6 +112,33 @@ docker-compose cp cypress-coverage-tests:/app/cypress/reports ./cypress/reports
 docker-compose down
 ```
 
+## GitHub Pages Deployment
+
+This repository is configured for GitHub Pages using `gh-pages`.
+
+1. Build and publish:
+
+```bash
+npm run deploy
+```
+
+2. In GitHub repository settings:
+
+- Open `Settings -> Pages`
+- Set `Source` to `Deploy from a branch`
+- Select branch `gh-pages`
+- Select folder `/ (root)`
+
+Live URL:
+
+- `https://duvvulakshmiprasanna.github.io/Analytics-dashboard-cypress-e2e`
+
+Notes:
+
+- The app uses `HashRouter` to prevent blank pages on refresh.
+- Vite `base` is configured to `/Analytics-dashboard-cypress-e2e/` for project-site assets.
+- GitHub Pages hosts only the frontend build; Docker/Cypress evaluation remains in-repo.
+
 Why Docker is recommended here:
 
 - Avoids local Cypress binary/cache issues
