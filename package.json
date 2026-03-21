@@ -1,0 +1,38 @@
+{
+  "name": "analytics-dashboard-cypress-e2e",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite --host 0.0.0.0 --port 3005",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "coverage:report": "nyc report --reporter=json-summary --reporter=html --reporter=clover",
+    "test:e2e:coverage": "cypress run && npm run coverage:report"
+  },
+  "dependencies": {
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.1"
+  },
+  "devDependencies": {
+    "@cypress/code-coverage": "^3.14.7",
+    "@eslint/js": "^9.39.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "babel-plugin-istanbul": "^7.0.1",
+    "cypress": "^14.5.4",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.4.0",
+    "mochawesome": "^7.1.3",
+    "nyc": "^17.1.0",
+    "vite": "^8.0.1"
+  }
+}
