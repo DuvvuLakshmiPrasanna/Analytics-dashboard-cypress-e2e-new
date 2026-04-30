@@ -14,8 +14,9 @@
     "preview": "vite preview",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
-    "coverage:report": "nyc report --reporter=json-summary --reporter=html --reporter=clover",
-    "test:e2e:coverage": "cypress run && npm run coverage:report"
+    "coverage:report": "nyc report --reporter=json-summary --reporter=lcov --reporter=clover",
+    "coverage:check": "nyc check-coverage --statements 80 --branches 75 --functions 80 --lines 80",
+    "test:e2e:coverage": "cypress run && npm run coverage:report && npm run coverage:check"
   },
   "dependencies": {
     "react": "^19.2.4",

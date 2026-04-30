@@ -12,6 +12,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 18
+      start_period: 15s
 
   cypress-coverage-tests:
     build:
@@ -22,3 +23,7 @@ services:
         condition: service_healthy
     environment:
       - CYPRESS_BASE_URL=http://app:3005
+    volumes:
+      - ./coverage:/app/coverage
+      - ./cypress/reports:/app/cypress/reports
+      - ./.nyc_output:/app/.nyc_output

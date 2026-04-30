@@ -23,4 +23,31 @@ describe('Dashboard filters and elements', () => {
     cy.get('[data-testid="metric-card-revenue"]').should('be.visible')
     cy.get('[data-testid="metric-card-conversion"]').should('be.visible')
   })
+
+  it('handles export and refresh feedback states', () => {
+    cy.visit('/dashboard')
+
+    cy.get('[data-testid="dashboard-feedback"]').should(
+      'contain',
+      'Dashboard refreshed 0 times',
+    )
+
+    cy.get('[data-testid="export-button"]').click()
+    cy.get('[data-testid="dashboard-feedback"]').should(
+      'contain',
+      'Export started successfully',
+    )
+
+    cy.get('[data-testid="refresh-button"]').click()
+    cy.get('[data-testid="dashboard-feedback"]').should(
+      'contain',
+      'Dashboard refreshed 1 time',
+    )
+
+    cy.get('[data-testid="refresh-button"]').click()
+    cy.get('[data-testid="dashboard-feedback"]').should(
+      'contain',
+      'Dashboard refreshed 2 times',
+    )
+  })
 })

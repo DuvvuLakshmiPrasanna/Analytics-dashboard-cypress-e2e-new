@@ -1,189 +1,129 @@
-# Analytics Dashboard with Cypress E2E
+# Analytics Dashboard with Comprehensive Cypress Coverage
 
-React + Vite analytics dashboard with Cypress end-to-end coverage tests and Docker-based execution.
+This repository contains a multi-page analytics dashboard built with React and Vite, plus a Cypress end-to-end suite instrumented for Istanbul/NYC coverage reporting.
 
-This project is designed to be evaluation-friendly with deterministic selectors (`data-testid`) and a repeatable Docker run flow.
+The project is aligned to the evaluation rubric:
 
-## Stack
+- Docker Compose setup with `app` and `cypress-coverage-tests` services
+- Required routes and `data-testid` selectors
+- Required Cypress spec files under `cypress/e2e/coverage/`
+- Coverage reports produced in evaluator-expected locations
 
-- React 19 + Vite 8
+## Tech Stack
+
+- React 19
+- Vite 8
+- React Router
 - Cypress 14
-- NYC + Istanbul reporting
+- `@cypress/code-coverage`
+- NYC (Istanbul)
 - Docker + Docker Compose
 
-## Features
-
-- Multi-page analytics UI with routing:
-	- Dashboard metrics and chart cards
-	- Data table with pagination, sorting, and search
-	- Settings form with save/reset behaviors
-- Consistent `data-testid` attributes across all key UI elements
-- Cypress E2E test suite for required user journeys and edge cases
-- NYC report generation pipeline for coverage artifacts
-
-## App Routes
+## Routes and Required UI
 
 - `/dashboard`
 - `/data`
 - `/settings`
 
-## Project Structure
+Each page implements all assignment-required selectors, including:
+
+- Dashboard: `dashboard-container`, `date-range-filter`, `metric-card-*`, `chart-*`, `refresh-button`, `export-button`
+- Data: `data-table`, `table-header-*`, `table-row-*`, `pagination-controls`, `page-size-select`, `page-number`, `prev-page-button`, `next-page-button`, `search-input`, `sort-*`
+- Settings: `settings-form`, `currency-select`, `timezone-select`, `notifications-toggle`, `theme-toggle`, `save-settings-button`, `reset-settings-button`
+
+## Repository Structure
 
 ```text
 src/
-	components/         Shared layout components
-	pages/              Route-level pages (dashboard, data, settings)
-	data/               Mock data and default settings
+  components/
+  data/
+  pages/
 cypress/
-	e2e/coverage/       Required assignment spec files
-	support/            Cypress support and code-coverage hooks
+  e2e/coverage/
+    dashboard-filters.cy.js
+    data-table-operations.cy.js
+    edge-cases.cy.js
+    settings-management.cy.js
+    user-interactions.cy.js
+  support/e2e.js
+Dockerfile
+Dockerfile.cypress
+docker-compose.yml
 ```
+
+## Environment Variables
+
+The project includes `.env.example`:
+
+- `PORT=3005`
+- `CYPRESS_BASE_URL=http://app:3005`
+
+## How Coverage Works
+
+1. Source code is instrumented using `babel-plugin-istanbul` via Vite React plugin configuration.
+2. Cypress loads `@cypress/code-coverage/support` in `cypress/support/e2e.js`.
+3. Cypress plugin task is registered in `cypress.config.js`.
+4. After test execution, NYC generates reports from collected coverage.
 
 ## NPM Scripts
 
-- `npm run dev`: Run Vite dev server
-- `npm run start`: Run app on `0.0.0.0:3005`
-- `npm run build`: Production build
-- `npm run lint`: ESLint checks
-- `npm run cypress:open`: Interactive Cypress mode
-- `npm run cypress:run`: Headless Cypress run
-- `npm run coverage:report`: Generate NYC reports from collected coverage data
-- `npm run test:e2e:coverage`: Run Cypress then NYC reporting in one command
+- `npm run dev`: start local dev server
+- `npm run start`: start app on `0.0.0.0:3005`
+- `npm run build`: build production bundle
+- `npm run lint`: run ESLint
+- `npm run cypress:open`: open Cypress UI
+- `npm run cypress:run`: run Cypress in headless mode
+- `npm run coverage:report`: generate `json-summary`, `lcov`, and `clover` reports
+- `npm run coverage:check`: enforce coverage thresholds (`80/75/80/80`)
+- `npm run test:e2e:coverage`: run Cypress + report generation + threshold check
 
-## Cypress Coverage Specs
+## Docker Execution (Evaluator-Compatible)
 
-Required test specs are available under `cypress/e2e/coverage/`:
-
-- `dashboard-filters.cy.js`
-- `data-table-operations.cy.js`
-- `edge-cases.cy.js`
-- `settings-management.cy.js`
-- `user-interactions.cy.js`
-
-## Local Run
-
-1. Install dependencies:
-
-```bash
-npm install
-```
-
-2. Start app:
-
-```bash
-npm run start
-```
-
-3. Validate code quality:
-
-```bash
-npm run lint
-npm run build
-```
-
-4. Run Cypress locally:
-
-```bash
-npm run cypress:run
-```
-
-If Cypress binary is missing locally, install it:
-
-```bash
-npx cypress install
-```
-
-5. Optional one-command E2E + coverage report:
-
-```bash
-npm run test:e2e:coverage
-```
-
-## Docker Workflow
-
-Use this exact flow:
+Run the same flow used by evaluation:
 
 ```bash
 docker-compose up -d --build
 docker-compose exec cypress-coverage-tests npx cypress run
-docker-compose exec cypress-coverage-tests npx nyc report --reporter=json-summary --reporter=html --reporter=clover
+docker-compose exec cypress-coverage-tests npx nyc report --reporter=json-summary --reporter=lcov --reporter=clover
 docker-compose cp cypress-coverage-tests:/app/coverage ./coverage
 docker-compose cp cypress-coverage-tests:/app/cypress/reports ./cypress/reports
 docker-compose down
 ```
 
-## GitHub Pages Deployment
+## Expected Output Files
 
-This repository is configured for GitHub Pages using `gh-pages`.
-
-1. Build and publish:
-
-```bash
-npm run deploy
-```
-
-2. In GitHub repository settings:
-
-- Open `Settings -> Pages`
-- Set `Source` to `Deploy from a branch`
-- Select branch `gh-pages`
-- Select folder `/ (root)`
-
-Live URL:
-
-- `https://duvvulakshmiprasanna.github.io/Analytics-dashboard-cypress-e2e`
-
-Notes:
-
-- The app uses `HashRouter` to prevent blank pages on refresh.
-- Vite `base` is configured to `/Analytics-dashboard-cypress-e2e/` for project-site assets.
-- GitHub Pages hosts only the frontend build; Docker/Cypress evaluation remains in-repo.
-
-Why Docker is recommended here:
-
-- Avoids local Cypress binary/cache issues
-- Uses the same browser/runtime stack for repeatable results
-- Keeps host environment clean
-
-## Generated Artifacts
-
-After Docker execution:
+After the above commands, these files must exist:
 
 - `coverage/coverage-summary.json`
-- `coverage/index.html`
+- `coverage/lcov-report/index.html`
 - `coverage/clover.xml`
 - `cypress/reports/test-execution.json`
 
-## Test Scope
+## Local Development
 
-The E2E suite validates:
+```bash
+npm install
+npm run lint
+npm run build
+npm run start
+```
 
-- Dashboard rendering and filter interaction
-- Data table rendering, sorting, search, and page-size behavior
-- Settings control presence and save/reset flows
-- Edge cases like empty search results and pagination boundaries
-- Cross-page navigation and primary actions
+In another terminal:
 
-## Environment
+```bash
+npm run cypress:run
+npm run coverage:report
+```
 
-See `.env.example`:
+## Submission Notes
 
-- `PORT=3005`
-- `CYPRESS_BASE_URL=http://app:3005`
+- Do not commit generated artifacts:
+  - `coverage/`
+  - `cypress/reports/`
+- These are intentionally ignored in `.gitignore` and should be generated during evaluation.
 
 ## Troubleshooting
 
-- Cypress executable missing on local machine:
-	- Run `npx cypress install`
-	- Or use Docker flow directly
-- Docker test container not running for `docker-compose exec`:
-	- Run `docker-compose up -d --build` again
-	- Confirm services with `docker-compose ps`
-- Coverage summary shows `Unknown` totals:
-	- Ensure instrumentation and coverage hook are enabled in the runtime under test
-	- Re-run Cypress before running `nyc report`
-
-## Notes
-
-- All E2E specs pass in Docker with the provided compose workflow.
-- Dashboard, data, and settings pages include assignment-required `data-testid` selectors.
+- If `docker-compose exec` fails because services are not running, execute `docker-compose up -d --build` again.
+- If coverage totals are `Unknown`, run Cypress first and then run the NYC report command.
+- If Cypress is unavailable locally on Windows, prefer Docker flow to avoid host binary issues.
