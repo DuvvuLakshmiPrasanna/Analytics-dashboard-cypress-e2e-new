@@ -1,13 +1,19 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import istanbul from 'vite-plugin-istanbul'
 
-// https://vite.dev/config/
 export default defineConfig({
   base: '/',
   plugins: [
-    react({
-      babel: {
-        plugins: ['istanbul'],
+    react(),
+    istanbul({
+      include: ['src/**/*.js', 'src/**/*.jsx'],
+      exclude: ['node_modules', 'cypress', '**/*.test.js', '**/*.cy.js'],
+      extension: ['.js', '.jsx'],
+      requireEnv: false,
+      rollup: {
+        include: ['src/**/*.js', 'src/**/*.jsx'],
+        exclude: ['node_modules', 'cypress', '**/*.test.js', '**/*.cy.js'],
       },
     }),
   ],

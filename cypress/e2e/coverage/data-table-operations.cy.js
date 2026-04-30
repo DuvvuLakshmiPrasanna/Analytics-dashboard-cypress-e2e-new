@@ -31,4 +31,28 @@ describe('Data table operations', () => {
     cy.get('[data-testid="page-size-select"]').select('20')
     cy.get('[data-testid^="table-row-"]').its('length').should('eq', 20)
   })
+
+  it('handles boundary pagination and alternate sort columns', () => {
+    cy.visit('/data')
+
+    cy.get('[data-testid="page-size-select"]').select('5')
+    cy.get('[data-testid="page-number"]').should('contain', 'Page 1 of 16')
+    cy.get('[data-testid="prev-page-button"]').click({ force: true })
+    cy.get('[data-testid="page-number"]').should('contain', 'Page 1 of 16')
+
+    for (let i = 0; i < 20; i += 1) {
+      cy.get('[data-testid="next-page-button"]').click({ force: true })
+    }
+
+    cy.get('[data-testid="page-number"]').should('contain', 'Page 16 of 16')
+    cy.get('[data-testid="next-page-button"]').should('be.disabled')
+
+    cy.get('[data-testid="sort-revenue"]').click()
+    cy.get('[data-testid="sort-revenue"]').click()
+    cy.get('[data-testid="sort-id"]').click()
+    cy.get('[data-testid="table-row-0"] td')
+      .first()
+      .invoke('text')
+      .should('match', /^\d+$/)
+  })
 })

@@ -27,4 +27,18 @@ describe('Cross-page user interactions', () => {
     cy.get('[data-testid="save-settings-button"]').click()
     cy.get('[data-testid="settings-feedback"]').should('contain', 'saved successfully')
   })
+
+  it('shows active navigation state on each route', () => {
+    cy.visit('/dashboard')
+    cy.contains('a', 'Dashboard').should('have.class', 'active')
+    cy.contains('a', 'Data').should('not.have.class', 'active')
+
+    cy.contains('a', 'Data').click()
+    cy.contains('a', 'Data').should('have.class', 'active')
+    cy.contains('a', 'Settings').should('not.have.class', 'active')
+
+    cy.contains('a', 'Settings').click()
+    cy.contains('a', 'Settings').should('have.class', 'active')
+    cy.contains('a', 'Dashboard').should('not.have.class', 'active')
+  })
 })

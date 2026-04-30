@@ -8,7 +8,7 @@ export default defineConfig({
       codeCoverageTask(on, config)
       return config
     },
-    specPattern: 'cypress/e2e/**/*.cy.js',
+    specPattern: 'cypress/e2e/coverage/**/*.cy.js',
     supportFile: 'cypress/support/e2e.js',
   },
   reporter: 'mochawesome',

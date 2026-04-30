@@ -11,8 +11,14 @@ node_modules
 dist
 dist-ssr
 *.local
-/coverage
-cypress/reports
+/coverage/*
+!/coverage/coverage-summary.json
+!/coverage/clover.xml
+!/coverage/lcov-report/
+/coverage/lcov-report/*
+!/coverage/lcov-report/index.html
+/cypress/reports/*
+!/cypress/reports/test-execution.json
 .nyc_output
 
 # Editor directories and files

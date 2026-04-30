@@ -32,4 +32,20 @@ describe('Settings management', () => {
     cy.get('[data-testid="notifications-toggle"]').should('be.checked')
     cy.get('[data-testid="theme-toggle"]').should('have.value', 'light')
   })
+
+  it('supports all selectable values and clears feedback after edits', () => {
+    cy.visit('/settings')
+
+    cy.get('[data-testid="save-settings-button"]').click()
+    cy.get('[data-testid="settings-feedback"]').should('contain', 'saved successfully')
+
+    cy.get('[data-testid="currency-select"]').select('EUR')
+    cy.get('[data-testid="timezone-select"]').select('EST')
+    cy.get('[data-testid="theme-toggle"]').select('Light')
+    cy.get('[data-testid="notifications-toggle"]').check({ force: true })
+    cy.get('[data-testid="settings-feedback"]').should('have.text', '')
+
+    cy.get('[data-testid="save-settings-button"]').click()
+    cy.get('[data-testid="settings-feedback"]').should('contain', 'saved successfully')
+  })
 })
