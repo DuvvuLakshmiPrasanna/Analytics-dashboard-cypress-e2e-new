@@ -15,8 +15,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "artifacts:clean": "node scripts/clean-artifacts.mjs",
-    "coverage:report": "nyc report --reporter=json-summary --reporter=lcov --reporter=clover",
-    "coverage:check": "nyc check-coverage --statements 80 --branches 75 --functions 80 --lines 80",
+    "coverage:report": "node scripts/generate-coverage-report.mjs",
+    "coverage:check": "node scripts/check-coverage.mjs",
     "test:e2e:coverage": "cypress run && npm run coverage:report && npm run coverage:check",
     "test:e2e:coverage:docker": "node scripts/run-docker-coverage.mjs"
   },

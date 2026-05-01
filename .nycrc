@@ -1,6 +1,6 @@
 {
   "all": true,
-  "include": ["src/**/*.js", "src/**/*.jsx"],
+  "include": ["**/src/**/*.js", "**/src/**/*.jsx"],
   "exclude": ["cypress/**", "coverage/**", "**/*.cy.js", "**/*.config.js"],
   "report-dir": "coverage",
   "temp-dir": ".nyc_output"

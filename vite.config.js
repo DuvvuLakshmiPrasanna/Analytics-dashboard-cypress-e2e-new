@@ -4,18 +4,17 @@ import istanbul from 'vite-plugin-istanbul'
 
 export default defineConfig({
   base: '/',
+  build: {
+    sourcemap: true,
+  },
   plugins: [
-    react(),
     istanbul({
-      include: ['src/**/*.js', 'src/**/*.jsx'],
-      exclude: ['node_modules', 'cypress', '**/*.test.js', '**/*.cy.js'],
-      extension: ['.js', '.jsx'],
+      cypress: true,
+      include: 'src/**/*.{js,jsx}',
+      exclude: ['cypress/**', '**/*.cy.js', '**/*.config.js'],
       requireEnv: false,
-      rollup: {
-        include: ['src/**/*.js', 'src/**/*.jsx'],
-        exclude: ['node_modules', 'cypress', '**/*.test.js', '**/*.cy.js'],
-      },
     }),
+    react(),
   ],
   server: {
     host: '0.0.0.0',
