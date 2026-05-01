@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react'
 import istanbul from 'vite-plugin-istanbul'
 
 export default defineConfig({
-  base: '/',
+  base: '/Analytics-dashboard-cypress-e2e-new/',
   build: {
     sourcemap: true,
   },
